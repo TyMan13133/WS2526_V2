@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="WS2526_V2" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="all">
+				<Option output="bin/Release/WS2526_V2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="clean">
+				<Option output="WS2526_V2" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+			<Target title="doc">
+				<Option output="WS2526_V2" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Doxyfile">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="Makefile">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="SHA256.C">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="SHA256.H">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="SIMPLESOCKET.C">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="SIMPLESOCKET.H">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="TASK3.C">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="TASK3.H">
+			<Option target="all" />
+		</Unit>
+		<Unit filename="client.C">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="main.C">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Unit filename="server.C">
+			<Option compilerVar="CC" />
+			<Option target="all" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
