@@ -1,8 +1,5 @@
 CC=g++
 
-# Test vom 10.12.25 15:49
-
-
 CFLAGS=$(shell pkg-config --cflags opencv) 
 LIBS=$(shell pkg-config --libs opencv) 
 
