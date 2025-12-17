@@ -1,0 +1,4 @@
+<map id="TASK3::World" name="TASK3::World">
+<area shape="rect" id="node2" href="$d2/db2/classTASK3_1_1Ship.html" title="Implements the data structure for the battle ships. " alt="" coords="9,95,108,121"/>
+<area shape="rect" id="node3" href="$d6/d9a/classTASK3_1_1Block.html" title="Implements a class that is the basic building block of the game world. " alt="" coords="6,5,111,32"/>
+</map>
