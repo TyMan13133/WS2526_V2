@@ -17,7 +17,7 @@
 #include <netinet/in.h> //contains constants and structures needed for internet domain addresses
 
 
-
+#include "TASK3.H"
 #include "SIMPLESOCKET.H"
 
 /**
@@ -28,9 +28,11 @@
 
 class MySrv : public TCPserver {
 public:
-    MySrv (int port, int bsize) : TCPserver(port,bsize) {};
+    MySrv (int port, int bsize) : TCPserver(port,bsize) {w=new TASK3::World();}; //sicherstellen das eine welt vorhanden ist
 protected:
+    TASK3::World *w;//objekt weld mit dem namen w
     string myResponse(string string);
+
 };
 
 int main(){
@@ -45,8 +47,13 @@ string MySrv :: myResponse(string input){
     //vergleich vom string 0 bis 7 wenn ja dann OK1
     if (input.compare(0,7,"NEWGAME")== 0){
 
+        if (w!= nullptr){
+            delete w;
+        }
 
-        return string("OK1");
+        w = new TASK3::World ();
+
+        return string("OK");
     }
 
     if (input.compare(0,5,"SHOT[")== 0){
