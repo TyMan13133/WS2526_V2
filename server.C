@@ -17,6 +17,7 @@
 #include <netinet/in.h> //contains constants and structures needed for internet domain addresses
 
 
+
 #include "SIMPLESOCKET.H"
 
 /**
@@ -40,12 +41,25 @@ int main(){
 }
 
 string MySrv :: myResponse(string input){
-    int x,y, e;
-    e = sscanf (input.c_str(),"COORD[%d,%d]",&x,&y);
-    if(e!=2){
-        return string ("ERROR");
-    }else{
-        return (to_string(x+y));
+    int x,y, e; //komunikation code hier hin
+    //vergleich vom string 0 bis 7 wenn ja dann OK1
+    if (input.compare(0,7,"NEWGAME")== 0){
+
+
+        return string("OK1");
     }
-    return string ("MySrv");
+
+    if (input.compare(0,5,"SHOT[")== 0){
+
+        e = sscanf (input.c_str(),"SHOT[%d,%d]",&x,&y);
+        if(e!=2){
+            return string ("ERROR");
+        }else{
+            return (to_string(x+y));
+        }
+
+    }
+
+
+    return string ("UNKOWNCMD");
 }
