@@ -15,8 +15,9 @@ using namespace std;
 TCPclient c;
 
 int tactic1();  //Zeilenweiser Durchgang
-int tactic2();  //Durchgang im Schachbrett Muster
-int tactic3();  //Zufaellige Reihenfolge
+int tactic2();  //Durchgang im Schachbrettmuster
+int tactic3();  //Zufaellige Reihenfolge ohne Wiederholungen
+int tactic4();  //Zufällige Reihenfolge mit Wiederholungen
 
 
 unsigned int tries = 100; //Anzahl der Durchlaeufe
@@ -44,31 +45,33 @@ int main(){
     StatisticalData.open("StatisticalData.csv");
 
     if(StatisticalData.is_open()){
-        cout << "The File for the saving of statistical Data was openend sucessfully, Proceeding ..." << endl;
+        cout << "Die Datei zur Speicherung der statistischen Daten wurde erfolgreich geöffnet " << endl;
     }
     else{
-        cout << "Unexpected Error opening the file" << endl;
+        cout << "Unbekannter Fehler beim Öffnen der Datei" << endl;
     }
 
     //Auswaehlen der Strategie
     int strategy;
-    cout << "What Strategy should be statistically analysed ?:" << endl;
-    cout << "1. Strategy 1 (line by line Pattern)" << endl;
-    cout << "2. Strategy 2 (Chessboard Pattern)" << endl;
-    cout << "3. Strategy 3 (Random Pattern)" << endl;
+    cout << "Welche Strategie soll analysiert werden ?:" << endl;
+    cout << "1. Strategie 1 (Zeilenweiser Durchgang)" << endl;
+    cout << "2. Strategie 2 (Durchgang im Schachbrettmuster)" << endl;
+    cout << "3. Strategie 3 (Zufällige Reihenfolge ohne Wiederholungen)" << endl;
+    cout << "4. Strategie 4 (Zufällige Reihenfolge mit Wiederholungen)" << endl;
     cin >> strategy;
 
     switch(strategy){
-        case 1: cout << "Strategy 1 was choosen" << endl;
+        case 1: cout << "Strategie 1 wurde ausgewählt" << endl;
                 break;
-        case 2: cout << "Strategy 2 was choosen" << endl;
+        case 2: cout << "Strategie 2 wurde ausgewählt" << endl;
                 break;
-        case 3: cout << "Strategy 3 was choosen" << endl;
+        case 3: cout << "Strategie 3 wurde ausgewählt" << endl;
                 break;
-
+        case 4: cout << "Strategie 4 wurde ausgewählt" << endl;
+                break;
         default:
-                cout << "Invalid Strategy!" << endl;
-                sleep(15);
+                cout << "Ungültige Strategie !" << endl;
+                sleep(5);
                 return 0;
         }
 
@@ -79,8 +82,7 @@ int main(){
 
         //Anfrage an den Server fuer ein neues Spiel
         c.sendData("NEWGAME");
-        string msg = c.receive(32); //Empfang
-        //Erwartet wird "NEWGAME"
+        string msg = c.receive(32);
 
         int currRun = 0;
 
@@ -91,8 +93,10 @@ int main(){
                 break;
         case 3: currRun = tactic3();
                 break;
+        case 4: currRun = tactic4();
+                break;
         default:
-                cout << "Invalid Strategy!" << endl;
+                cout << "Ungültige Stategie !" << endl;
                 sleep(15);
                 return 1;
         }
@@ -100,21 +104,21 @@ int main(){
 
         //Fehler-Abfang
         if(atmpsArr[n] == 0){
-            cout << "ERROR! No Strategy is implemented, terminating ..." << endl;
+            cout << "Fehler! Keine Strategie implementiert !" << endl;
             sleep(15);
             return 0;
         }
         StatisticalData << (n+1) << ";" << currRun << endl;
-        cout << "Game " << (n+1) << ": needed " << to_string(atmpsArr[n]) << " attemps" << endl;
+        cout << "Spiel " << (n+1) << ": benötigte " << to_string(atmpsArr[n]) << " Versuche" << endl;
     }
 
     //Schließen der CSV Datei
     StatisticalData.close();
     if(StatisticalData.is_open() == false){
-            cout << "Statistical Data exported" << endl;
+            cout << "Statistische Daten exportiert" << endl;
     }
     else{
-            cout << "Unknown Error while trying to export Statistical Data" << endl;
+            cout << "Unbekannter Fehler beim Versuch statistische Daten zu exportieren" << endl;
     }
 
     sleep(50);
@@ -144,7 +148,7 @@ int tactic1(){
             }
         }
     }
-    //Fehlerabfang, falls nie alle Schiffe versenkt werden
+    //Fehlerabfang, falls nicht alle Schiffe versenkt werden
         return -1;
 }
 
@@ -193,7 +197,7 @@ int tactic2(){
             }
         }
     }
-    //Fehlerabfang, falls nie alle Schiffe versenkt werden
+    //Fehlerabfang, falls nicht alle Schiffe versenkt werden
     return -1;
 }
 
@@ -235,7 +239,48 @@ int tactic3(){
             return attempts;
         }
     }
-    //Fehlerabfang, falls nie alle Schiffe versenkt werden
+    //Fehlerabfang, falls nicht alle Schiffe versenkt werden
+    return -1;
+}
+
+/*
+- tactic4:
+- Zufaellige Reihenfolge von Felder(1..10,1..10)
+- Bei jedem Schuss wird ein neues Feld bestimmt
+- idx = rand() % 100 -> Werte von 0..99
+- x = (idx % 10) +1
+- y = (idx / 10) +1
+- Wiederholungen sind möglich
+- Stopp bei GAME_OVER oder beim Erreichen der maxAttempts
+*/
+
+int tactic4(){
+    int attempts = 0;
+    const int maxAttempts = 1000; //maximale Anzahl an Versuchen
+
+
+    while(attempts < maxAttempts){
+
+        //int idx zufällig 0..99 mit möglichen Wiederholungen
+        int idx = rand() % 100;
+
+        //idx => (x,y)
+        int x = getX(idx); //Spalte
+        int y = getY(idx); //Zeile
+
+        attempts++;
+        string msg = "SHOT[" + to_string(x) + "," + to_string(y) + "]";
+        c.sendData(msg);
+
+        string reply = c.receive(64);
+
+
+        if(reply == "GAME_OVER"){
+            return attempts;
+        }
+    }
+    //Fehlerabfang, falls es zu viele Versuche gibt
+    cout << "Maximale Anzahl an Attempts von (" << maxAttempts << ") erreicht " << endl;
     return -1;
 }
 

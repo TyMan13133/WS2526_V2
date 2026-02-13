@@ -28,9 +28,9 @@
 
 class MySrv : public TCPserver {
 public:
-    MySrv (int port, int bsize) : TCPserver(port,bsize) {w=new TASK3::World();}; //sicherstellen das eine welt vorhanden ist
+    MySrv (int port, int bsize) : TCPserver(port,bsize) {w=new TASK3::World();}; //prüfen ob welt vorhanden ist
 protected:
-    TASK3::World *w;//objekt weld mit dem namen w
+    TASK3::World *w;//objekt welt mit dem namen w
     string myResponse(string string);
 
 };
@@ -44,7 +44,7 @@ int main(){
 
 string MySrv :: myResponse(string input){
     int x,y, e; //komunikation code hier hin
-    //vergleich vom string 0 bis 7 wenn ja dann OK1
+    //vergleich vom string 0 bis 7 wenn ja dann OK
     if (input.compare(0,7,"NEWGAME")== 0){
 
         if (w!= nullptr){
